@@ -1,0 +1,103 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int t = sc.nextInt();
+
+        while (t-- > 0) {
+            int n = sc.nextInt();
+            int k = sc.nextInt();
+
+            int[] capacity = new int[k + 1];
+            for (int i = 1; i <= k; i++) {
+                capacity[i] = sc.nextInt();
+            }
+
+            int[] wishes = new int[n];
+            for (int i = 0; i < n; i++) {
+                wishes[i] = sc.nextInt();
+            }
+
+            int[] count = new int[k + 2];
+            for (int w : wishes) {
+                if (w <= k) {
+                    count[w]++;
+                }
+            }
+
+            List<Integer> operations = new ArrayList<>();
+
+            boolean possible = true;
+            int opLimit = 1000;
+            int opCount = 0;
+
+            while (true) {
+                boolean done = true;
+                for (int level = 1; level <= k; level++) {
+                    if (count[level] > 0) {
+                        done = false;
+                        break;
+                    }
+                }
+
+                if (done) {
+                    break;
+                }
+
+                boolean madeOperation = false;
+
+                for (int i = 0; i < n; i++) {
+                    int curLevel = wishes[i];
+
+                    if (curLevel == k + 1) {
+                        continue;
+                    }
+
+                    int nextLevel = curLevel + 1;
+
+                    if (nextLevel <= k) {
+                        if (count[nextLevel] + 1 > capacity[nextLevel]) {
+                            continue;
+                        }
+                    }
+
+                    count[curLevel]--;
+                    count[nextLevel]++;
+                    wishes[i] = nextLevel;
+
+                    operations.add(i + 1);
+                    opCount++;
+                    madeOperation = true;
+
+                    break;
+                }
+
+                if (!madeOperation || opCount > opLimit) {
+                    possible = false;
+                    break;
+                }
+            }
+
+            if (!possible) {
+                System.out.println(-1);
+            } else {
+                System.out.println(operations.size());
+
+                for (int i = 0; i < operations.size(); i++) {
+                    if (i > 0) {
+                        System.out.print(" ");
+                    }
+                    System.out.print(operations.get(i));
+                }
+
+                if (!operations.isEmpty()) {
+                    System.out.println();
+                }
+            }
+        }
+
+        sc.close();
+    }
+}
