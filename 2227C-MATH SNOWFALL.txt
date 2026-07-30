@@ -1,0 +1,40 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int T = Integer.parseInt(br.readLine());
+        StringBuilder out = new StringBuilder();
+
+        while (T-- > 0) {
+            int n = Integer.parseInt(br.readLine());
+            StringTokenizer st = new StringTokenizer(br.readLine());
+
+            List<Integer> both = new ArrayList<>();     // divisible by 6
+            List<Integer> two = new ArrayList<>();      // only divisible by 2
+            List<Integer> three = new ArrayList<>();    // only divisible by 3
+            List<Integer> none = new ArrayList<>();     // neither
+
+            for (int i = 0; i < n; i++) {
+                int x = Integer.parseInt(st.nextToken());
+                boolean d2 = (x % 2 == 0);
+                boolean d3 = (x % 3 == 0);
+
+                if (d2 && d3) both.add(x);
+                else if (d2) two.add(x);
+                else if (d3) three.add(x);
+                else none.add(x);
+            }
+
+            for (int x : both) out.append(x).append(' ');
+            for (int x : two) out.append(x).append(' ');
+            for (int x : none) out.append(x).append(' ');
+            for (int x : three) out.append(x).append(' ');
+            out.append('\n');
+        }
+
+        System.out.print(out);
+    }
+}
