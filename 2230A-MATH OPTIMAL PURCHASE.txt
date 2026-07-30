@@ -1,0 +1,36 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int t = sc.nextInt();
+
+        while (t-- > 0) {
+            long n = sc.nextLong();
+            long a = sc.nextLong();
+            long b = sc.nextLong();
+
+            long groups = n / 3;
+            long rem = n % 3;
+
+            long ans;
+
+            if (b >= 3 * a) {
+                // Buying individual keys is always cheaper or equal
+                ans = n * a;
+            } else {
+                ans = groups * b + rem * a;
+
+                // Sometimes buying one extra group key for the remainder is cheaper
+                if (rem > 0) {
+                    ans = Math.min(ans, (groups + 1) * b);
+                }
+            }
+
+            System.out.println(ans);
+        }
+
+        sc.close();
+    }
+}
