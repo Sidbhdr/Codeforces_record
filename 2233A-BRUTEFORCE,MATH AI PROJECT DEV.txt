@@ -1,0 +1,43 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    static int ceilDiv(int a, int b) {
+        return (a + b - 1) / b;
+    }
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int T = Integer.parseInt(br.readLine());
+        StringBuilder out = new StringBuilder();
+
+        while (T-- > 0) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+
+            int n = Integer.parseInt(st.nextToken());
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
+            int z = Integer.parseInt(st.nextToken());
+
+            // Without AI
+            int noAI = ceilDiv(n, x + y);
+
+            // With AI
+            int withAI;
+            int duringSetup = x * z;
+
+            if (duringSetup >= n) {
+                withAI = ceilDiv(n, x);
+            } else {
+                int rem = n - duringSetup;
+                withAI = z + ceilDiv(rem, x + 10 * y);
+            }
+
+            out.append(Math.min(noAI, withAI)).append('\n');
+        }
+
+        System.out.print(out);
+    }
+}
