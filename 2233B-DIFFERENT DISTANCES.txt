@@ -1,0 +1,58 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    static final int[] TWO = {2, 1, 1, 2, 1, 2, 2, 1};
+    static final int[] THREE = {1, 1, 2, 1, 2, 3, 1, 3, 2, 2, 3, 3};
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder out = new StringBuilder();
+
+        int t = Integer.parseInt(br.readLine());
+
+        while (t-- > 0) {
+            int n = Integer.parseInt(br.readLine());
+
+            if (n % 2 == 0) {
+                // Split into blocks of size 2
+                for (int base = 1; base <= n; base += 2) {
+                    for (int x : TWO) {
+                        out.append(x + base - 1).append(' ');
+                    }
+                }
+            } else {
+                int rem = n % 3;
+                int use3 = n - rem;
+
+                if (rem == 1) {
+                    rem += 3;
+                    use3 -= 3;
+                }
+
+                int i = 1;
+
+                // Blocks of size 3
+                while (i <= use3) {
+                    for (int x : THREE) {
+                        out.append(x + i - 1).append(' ');
+                    }
+                    i += 3;
+                }
+
+                // Remaining blocks of size 2
+                while (i <= n) {
+                    for (int x : TWO) {
+                        out.append(x + i - 1).append(' ');
+                    }
+                    i += 2;
+                }
+            }
+
+            out.append('\n');
+        }
+
+        System.out.print(out.toString());
+    }
+}
