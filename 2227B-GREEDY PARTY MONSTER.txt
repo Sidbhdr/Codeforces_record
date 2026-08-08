@@ -1,0 +1,24 @@
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int t = Integer.parseInt(br.readLine());
+
+        while (t-- > 0) {
+            int n = Integer.parseInt(br.readLine());
+            String s = br.readLine();
+
+            int open = 0;
+            for (int i = 0; i < n; i++) {
+                if (s.charAt(i) == '(') open++;
+            }
+
+            if (open * 2 == n)
+                System.out.println("YES");
+            else
+                System.out.println("NO");
+        }
+    }
+}
