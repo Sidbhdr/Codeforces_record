@@ -1,0 +1,114 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    static final int INF = 1_000_000;
+
+    static int solve(int n, int k, String s) {
+        int answer = INF;
+
+        // T = total number of R's in the final string
+        for (int T = 0; T <= n; T++) {
+
+            // We need at least k R's and k L's
+            if (T < k || n - T < k) {
+                continue;
+            }
+
+            /*
+             * dp[r] = minimum flips after processing current positions,
+             *         where r R's have been placed so far.
+             */
+            int[] dp = new int[n + 1];
+            Arrays.fill(dp, INF);
+            dp[0] = 0;
+
+            for (int i = 1; i <= n; i++) {
+                int[] next = new int[n + 1];
+                Arrays.fill(next, INF);
+
+                for (int r = 0; r < i; r++) {
+                    if (dp[r] == INF) {
+                        continue;
+                    }
+
+                    // ------------------------------------------------
+                    // Option 1: Make position i an R
+                    // ------------------------------------------------
+                    int newR = r + 1;
+
+                    /*
+                     * L's to the right of i:
+                     *
+                     * positions to right = n - i
+                     * R's to right = T - newR
+                     * L's to right = (n-i) - (T-newR)
+                     *
+                     * For R to be safe:
+                     * L's to right >= k
+                     */
+                    int leftLCount = (n - i) - (T - newR);
+
+                    if (leftLCount >= k) {
+                        int cost = dp[r];
+
+                        if (s.charAt(i - 1) != 'R') {
+                            cost++;
+                        }
+
+                        next[newR] = Math.min(next[newR], cost);
+                    }
+
+                    // ------------------------------------------------
+                    // Option 2: Make position i an L
+                    // ------------------------------------------------
+
+                    /*
+                     * If position i is L, it needs at least k R's
+                     * before it.
+                     *
+                     * Number of R's before i = r
+                     */
+                    if (r >= k) {
+                        int cost = dp[r];
+
+                        if (s.charAt(i - 1) != 'L') {
+                            cost++;
+                        }
+
+                        next[r] = Math.min(next[r], cost);
+                    }
+                }
+
+                dp = next;
+            }
+
+            // Exactly T R's must be present
+            answer = Math.min(answer, dp[T]);
+        }
+
+        return answer == INF ? -1 : answer;
+    }
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int t = Integer.parseInt(br.readLine().trim());
+
+        StringBuilder out = new StringBuilder();
+
+        while (t-- > 0) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+
+            int n = Integer.parseInt(st.nextToken());
+            int k = Integer.parseInt(st.nextToken());
+
+            String s = br.readLine().trim();
+
+            out.append(solve(n, k, s)).append('\n');
+        }
+
+        System.out.print(out);
+    }
+}
