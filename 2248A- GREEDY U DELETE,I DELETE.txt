@@ -1,0 +1,46 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    static String removeChar(String s, int idx) {
+        return s.substring(0, idx) + s.substring(idx + 1);
+    }
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder out = new StringBuilder();
+
+        int t = Integer.parseInt(br.readLine());
+
+        while (t-- > 0) {
+            String s = br.readLine();
+            String bestAlice = null;
+
+            for (int i = 0; i < s.length(); i++) {
+                if (s.charAt(i) != '0') continue;
+
+                String afterAlice = removeChar(s, i);
+
+                String bestBob = null;
+                for (int j = 0; j < afterAlice.length(); j++) {
+                    if (afterAlice.charAt(j) != '1') continue;
+
+                    String cur = removeChar(afterAlice, j);
+
+                    if (bestBob == null || cur.compareTo(bestBob) < 0) {
+                        bestBob = cur;
+                    }
+                }
+
+                if (bestAlice == null || bestBob.compareTo(bestAlice) > 0) {
+                    bestAlice = bestBob;
+                }
+            }
+
+            out.append(bestAlice).append('\n');
+        }
+
+        System.out.print(out);
+    }
+}
