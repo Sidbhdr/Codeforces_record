@@ -1,0 +1,30 @@
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder out = new StringBuilder();
+
+        int t = Integer.parseInt(br.readLine());
+
+        while (t-- > 0) {
+            int n = Integer.parseInt(br.readLine());
+
+            if (n == 1) {
+                out.append("1\n");
+            } else if (n == 2) {
+                out.append("-1\n");
+            } else {
+                out.append("1 2 3");
+                long cur = 6;
+                for (int i = 4; i <= n; i++) {
+                    out.append(" ").append(cur);
+                    cur *= 2;
+                }
+                out.append('\n');
+            }
+        }
+
+        System.out.print(out);
+    }
+}
